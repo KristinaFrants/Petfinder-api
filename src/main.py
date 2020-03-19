@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from models import db
-#from models import Person
+from models import Person
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -28,6 +28,28 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+@app.route('/register', methods=['POST'])
+def registration():
+    body = request.get_json()
+
+    db.session.add(Person(
+        username = body['username'],
+        email = body['email'],
+        firstname = body['firstname'],
+        lastname = body['lastname'],
+        zipcode = body['zipcode'],
+        address = body['address']
+    ))
+
+    db.session.commit()
+
+    return jsonify({
+        'register': 'success',
+        'msg': 'your account has been made'
+    })
+
+
+
 @app.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
 
@@ -36,6 +58,48 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@app.route('/person', methods=['POST'])
+def handle_person():
+
+    # First we get the payload json
+    body = request.get_json()
+
+    user1 = Person(username=body['username'], email=body['email'])
+    db.session.add(user1)
+    db.session.commit()
+    return "ok", 200
+
+@app.route('/users', methods=['GET'])
+def handle_users():
+
+    if request.method == 'GET':
+        users = Person.query.all()
+
+        if not users:
+            return jsonify({'msg':'User not found'}), 404
+
+        return jsonify( [x.serialize() for x in users] ), 200
+
+    return "Invalid Method", 404
+
+
+@app.route('/person/<int:person_id>', methods=['PUT', 'GET'])
+def get_single_person(person_id):
+    """
+    Single person
+    """
+    body = request.get_json() #{ 'username': 'new_username'}
+    if request.method == 'PUT':
+        user1 = Person.query.get(person_id)
+        user1.username = body.username
+        db.session.commit()
+        return jsonify(user1.serialize()), 200
+    if request.method == 'GET':
+        user1 = Person.query.get(person_id)
+        return jsonify(user1.serialize()), 200
+
+    return "Invalid Method", 404
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

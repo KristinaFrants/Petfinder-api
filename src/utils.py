@@ -20,6 +20,11 @@ def has_no_empty_params(rule):
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
 
+def sha256(string):
+    m = hashlib.sha256()
+    m.update(string.encode('utf-8'))
+    return m.hexdigest()
+
 def generate_sitemap(app):
     links = []
     for rule in app.url_map.iter_rules():
