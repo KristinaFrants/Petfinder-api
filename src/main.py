@@ -22,7 +22,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db)
 db.init_app(app)
 CORS(app)
-app.config['JWT_SECRET_KEY'] = 'Panda_bubu'  # Change this!
+app.config['JWT_SECRET_KEY'] = 'Panda_bubu'  
 jwt = JWTManager(app)
 
 # Handle/serialize errors like a JSON object
@@ -34,6 +34,26 @@ def handle_invalid_usage(error):
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
+
+@app.route('/myLogin', methods=['POST'])
+def myLogin_handle():
+    body = request.get_json()
+    email = request.json.get('email', None)
+
+    user = Person.query.filter_by(email=body['email'], password=sha256(body['password'])).first()
+    access_token = create_access_token(identity=email)
+    msg = "hey" + user.firstname + "you are logged in! :)"
+    return jsonify({
+        "token":access_token,
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "firstname": user.firstname,
+        "lastname": user.lastname,
+        "zipcode": user.zipcode,
+        "address": user.address,
+        "msg": msg
+    })
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -55,6 +75,12 @@ def login():
     return jsonify(access_token=access_token), 200
 
 
+@app.route('/protected', methods=['GET'])
+@jwt_required
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
 @app.route('/register', methods=['POST'])
 def registration():
     body = request.get_json()
@@ -128,6 +154,8 @@ def get_single_person(person_id):
         return jsonify(user1.serialize()), 200
 
     return "Invalid Method", 404
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
