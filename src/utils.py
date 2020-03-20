@@ -1,4 +1,5 @@
 from flask import jsonify, url_for
+import hashlib
 
 class APIException(Exception):
     status_code = 400
