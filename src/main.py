@@ -42,38 +42,17 @@ def myLogin_handle():
 
     user = Person.query.filter_by(email=body['email'], password=sha256(body['password'])).first()
     access_token = create_access_token(identity=email)
-    msg = "hey" + user.firstname + "you are logged in! :)"
+    msg = "hey " + user.firstname + " you are logged in! :)"
     return jsonify({
         "token":access_token,
         "id": user.id,
-        "username": user.username,
         "email": user.email,
         "firstname": user.firstname,
         "lastname": user.lastname,
-        "password": user.password,
         "zipcode": user.zipcode,
         "address": user.address,
         "msg": msg
     })
-
-@app.route('/login', methods=['POST'])
-def login():
-    if not request.is_json:
-        return jsonify({"msg": "Missing JSON in request"}), 400
-
-    username = request.json.get('username', None)
-    password = request.json.get('password', None)
-    if not username:
-        return jsonify({"msg": "Missing username parameter"}), 400
-    if not password:
-        return jsonify({"msg": "Missing password parameter"}), 400
-
-    if username != 'test' or password != 'test':
-        return jsonify({"msg": "Bad username or password"}), 401
-
-    # Identity can be any data that is json serializable
-    access_token = create_access_token(identity=username)
-    return jsonify(access_token=access_token), 200
 
 
 @app.route('/protected', methods=['GET'])
@@ -105,14 +84,14 @@ def registration():
 
 
 
-@app.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+# @app.route('/hello', methods=['POST', 'GET'])
+# def handle_hello():
 
-    response_body = {
-        "hello": "world"
-    }
+#     response_body = {
+#         "hello": "world"
+#     }
 
-    return jsonify(response_body), 200
+#     return jsonify(response_body), 200
 
 @app.route('/person', methods=['POST'])
 def handle_person():
