@@ -10,7 +10,7 @@ class Person(db.Model):
     lastname = db.Column(db.String(120))
     zipcode = db.Column(db.String(8))
     address = db.Column(db.String(120))
-    password = db.Column(db.String(120))
+    password = db.Column(db.String(120), nullable=False)
     
 
     def __repr__(self):
@@ -24,5 +24,6 @@ class Person(db.Model):
             "firstname": self.firstname,
             "lastname": self.lastname,
             "zipcode": self.zipcode,
-            "address": self.address
+            "address": self.address,
+            "password": self.password
         }

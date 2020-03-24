@@ -50,6 +50,7 @@ def myLogin_handle():
         "email": user.email,
         "firstname": user.firstname,
         "lastname": user.lastname,
+        "password": user.password,
         "zipcode": user.zipcode,
         "address": user.address,
         "msg": msg
