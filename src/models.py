@@ -38,7 +38,7 @@ class Alert(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String(80), unique=True, nullable=False)
     message = db.Column(db.String(80), nullable=False)
-    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
+    person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
     person = relationship(Person)
 
     def __repr__(self):

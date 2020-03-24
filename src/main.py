@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap, sha256
 from models import db
-from models import Person
+from models import Person, Alert
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
@@ -61,6 +61,7 @@ def protected():
     # Access the identity of the current user with get_jwt_identity
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
+# --------------------signup------------------------
 @app.route('/register', methods=['POST'])
 def registration():
     body = request.get_json()
@@ -124,7 +125,38 @@ def get_single_person(person_id):
         return jsonify(user1.serialize()), 200
 
     # return "Invalid Method", 404
+#####################################
+#ALERT
+#####################################
+@app.route('/alert', methods=['POST','GET'])
+def get_alert():
+    # get request
+    if request.method == 'GET':
+        all_alerts = Alert.query.all()
+        all_alerts = list(map(lambda x : x.serialize(), all_alerts))
+        
+        return jsonify(all_alerts), 200
 
+    if request.method == 'POST':
+        body = request.get_json() 
+        
+        if body is None:
+            raise APIException("Specify JSON body", status_code=400)
+        if "date" not in body:
+            raise APIException("Specify Date", status_code=400)
+        if "message" not in body:
+            raise APIException("Specify Message", status_code=400)
+
+        alert1 = Alert(date = body["date"], message = body['message'], person_id = body['person_id'])
+        db.session.add(alert1)
+        db.session.commit()
+        
+        return "ok", 200
+
+    return "invalid method", 404
+#####################################
+#PET
+#####################################
 
 
 # this only runs if `$ python src/main.py` is executed
