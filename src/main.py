@@ -83,16 +83,6 @@ def registration():
     })
 
 
-
-# @app.route('/hello', methods=['POST', 'GET'])
-# def handle_hello():
-
-#     response_body = {
-#         "hello": "world"
-#     }
-
-#     return jsonify(response_body), 200
-
 @app.route('/person', methods=['POST'])
 def handle_person():
 
@@ -133,7 +123,7 @@ def get_single_person(person_id):
         user1 = Person.query.get(person_id)
         return jsonify(user1.serialize()), 200
 
-    return "Invalid Method", 404
+    # return "Invalid Method", 404
 
 
 
