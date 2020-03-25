@@ -175,7 +175,7 @@ def get_pet():
             raise APIException("Specify Description", status_code=400)
         if "animal" not in body:
             raise APIException("Specify Animal", status_code=400)
-        pet1 = Pet(name = body['name'], description = body['description'], animal = body['animal'], person_id = body['person_id'])
+        pet1 = Pet(name = body['name'], description = body['description'], breed = body['breed'], age = body['age'], eyecolor = body['eyecolor'],  furcolor = body['furcolor'], animal = body['animal'], gender = body['gender'], person_id = body['person_id'])
         db.session.add(pet1)
         db.session.commit()
         

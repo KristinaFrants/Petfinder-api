@@ -33,7 +33,6 @@ class Person(db.Model):
             "lastname": self.lastname,
             "zipcode": self.zipcode,
             "address": self.address,
-            "password": self.password,
             "alerts": list(map(lambda bubu : bubu.serialize(), self.alerts)),
             "pets": list(map(lambda x : x.serialize(), self.pets))
         }
