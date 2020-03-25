@@ -141,8 +141,6 @@ def get_alert():
         body = request.get_json() 
         if body is None:
             raise APIException("Specify JSON body", status_code=400)
-        # if "date" not in body:
-        #     raise APIException("Specify Date", status_code=400)
         if "message" not in body:
             raise APIException("Specify Message", status_code=400)
 

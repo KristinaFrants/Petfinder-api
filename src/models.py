@@ -61,13 +61,13 @@ class Pet (db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
     animal = db.Column(db.String(20), nullable=False)
-    breed = db.Column(db.String(40), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    eyecolor = db.Column(db.String(20), nullable=False)
-    furcolor = db.Column(db.String(20), nullable=False)
-    gender = db.Column(db.String(20), nullable=False)
+    breed = db.Column(db.String(40), nullable=True)
+    age = db.Column(db.Integer, nullable=True)
+    eyecolor = db.Column(db.String(20), nullable=True)
+    furcolor = db.Column(db.String(20), nullable=True)
+    gender = db.Column(db.String(20), nullable=True)
     description = db.Column(db.String(1000), nullable=False)
-    person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
+    person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
    
     def __repr__(self):
         return '<Pet %r>' % self.name
