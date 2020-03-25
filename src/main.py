@@ -139,24 +139,69 @@ def get_alert():
 
     if request.method == 'POST':
         body = request.get_json() 
-        
         if body is None:
             raise APIException("Specify JSON body", status_code=400)
-        if "date" not in body:
-            raise APIException("Specify Date", status_code=400)
+        # if "date" not in body:
+        #     raise APIException("Specify Date", status_code=400)
         if "message" not in body:
             raise APIException("Specify Message", status_code=400)
 
-        alert1 = Alert(date = body["date"], message = body['message'], person_id = body['person_id'])
+        alert1 = Alert(message = body['message'], person_id = body['person_id'])
         db.session.add(alert1)
         db.session.commit()
         
+        # print('kevin', alert1.__repr__())
         return "ok", 200
 
     return "invalid method", 404
 #####################################
 #PET
 #####################################
+
+@app.route('/pets', methods=['POST','GET'])
+def get_alert():
+    # get request
+    if request.method == 'GET':
+        all_alerts = Alert.query.all()
+        all_alerts = list(map(lambda x : x.serialize(), all_alerts))
+        
+        return jsonify(all_alerts), 200
+
+    if request.method == 'POST':
+        body = request.get_json() 
+        if body is None:
+            raise APIException("Specify JSON body", status_code=400)
+        if "name" not in body:
+            raise APIException("Specify Date", status_code=400)
+        if "coat" not in body:
+            raise APIException("Specify Message", status_code=400)
+        if "date" not in body:
+            raise APIException("Specify Date", status_code=400)
+        if "message" not in body:
+            raise APIException("Specify Message", status_code=400)
+
+        pet = Alert(message = body['message'], person_id = body['person_id'])
+        db.session.add(alert1)
+        db.session.commit()
+        
+        # print('kevin', pet.__repr__())
+        return "ok", 200
+
+    return "invalid method", 404
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # this only runs if `$ python src/main.py` is executed
