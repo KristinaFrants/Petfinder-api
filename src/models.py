@@ -14,11 +14,11 @@ class Person(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     firstname = db.Column(db.String(120))
     lastname = db.Column(db.String(120))
-    zipcode = db.Column(db.String(8))
+    zipcode = db.Column(db.String(6))
     address = db.Column(db.String(120))
     password = db.Column(db.String(120), nullable=False)
     alerts = db.relationship('Alert', backref='person', lazy=True)
-    pets = db.relationship('Pets', backref='person', lazy=True)
+    pets = db.relationship('Pet', backref='person', lazy=True)
     
 
     def __repr__(self):
@@ -34,7 +34,8 @@ class Person(db.Model):
             "zipcode": self.zipcode,
             "address": self.address,
             "password": self.password,
-            "alerts": list(map(lambda bubu : bubu.serialize(), self.alerts))
+            "alerts": list(map(lambda bubu : bubu.serialize(), self.alerts)),
+            "pets": list(map(lambda x : x.serialize(), self.pets))
         }
    
     # ----------------------alert subclass---------------------------------
@@ -69,7 +70,7 @@ class Pet (db.Model):
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
    
     def __repr__(self):
-        return '<Pets %r>' % self.name
+        return '<Pet %r>' % self.name
 
     def serialize(self):
         return {
@@ -79,9 +80,9 @@ class Pet (db.Model):
             "breed": self.breed,
             "age": self.age,
             "eyecolor": self.eyecolor,
-            "furcolor": self.eyecolor,
-            "gender": self.gender,
-            "pets": list(map(lambda x : x.serialize(), self.pets))
+            "furcolor": self.furcolor,
+            "description": self.description,
+            "gender": self.gender
         }
    
 

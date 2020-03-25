@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap, sha256
 from models import db
-from models import Person, Alert
+from models import Person, Alert, Pet
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
@@ -159,11 +159,11 @@ def get_alert():
 #####################################
 
 @app.route('/pets', methods=['POST','GET'])
-def get_alert():
+def get_pet():
     # get request
     if request.method == 'GET':
-        all_alerts = Alert.query.all()
-        all_alerts = list(map(lambda x : x.serialize(), all_alerts))
+        all_pets = Pet.query.all()
+        all_pets = list(map(lambda x : x.serialize(), all_pets))
         
         return jsonify(all_alerts), 200
 
@@ -173,15 +173,12 @@ def get_alert():
             raise APIException("Specify JSON body", status_code=400)
         if "name" not in body:
             raise APIException("Specify Date", status_code=400)
-        if "coat" not in body:
-            raise APIException("Specify Message", status_code=400)
-        if "date" not in body:
-            raise APIException("Specify Date", status_code=400)
-        if "message" not in body:
-            raise APIException("Specify Message", status_code=400)
-
-        pet = Alert(message = body['message'], person_id = body['person_id'])
-        db.session.add(alert1)
+        if "description" not in body:
+            raise APIException("Specify Description", status_code=400)
+        if "animal" not in body:
+            raise APIException("Specify Animal", status_code=400)
+        pet1 = Pet(name = body['name'], description = body['description'], animal = body['animal'], person_id = body['person_id'])
+        db.session.add(pet1)
         db.session.commit()
         
         # print('kevin', pet.__repr__())
