@@ -41,8 +41,11 @@ def myLogin_handle():
     email = request.json.get('email', None)
 
     user = Person.query.filter_by(email=body['email'], password=sha256(body['password'])).first()
+   
     access_token = create_access_token(identity=email)
+    
     msg = "hey " + user.firstname + " you are logged in! :)"
+   
     return jsonify({
         "token":access_token,
         "id": user.id,
@@ -61,6 +64,7 @@ def protected():
     # Access the identity of the current user with get_jwt_identity
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
+
 # --------------------signup------------------------
 @app.route('/register', methods=['POST'])
 def registration():
@@ -152,6 +156,41 @@ def get_alert():
         return "ok", 200
 
     return "invalid method", 404
+
+@app.route('/alert/<int:alert_id>', methods=['PUT','GET', 'DELETE'])
+def get_single_alert(alert_id):
+    #put request
+    if request.method == 'PUT':
+        body = request.get_json()
+        if body is None:
+            raise APIException("Specify JSON body", status_code=400)
+        
+        alert1 = Alert.query.get(alert_id)
+        if "message" in body:
+            alert1.message = body["message"]
+        db.session.commit()
+        
+        return jsonify(alert1.serialize()), 200
+    
+    #get request
+    if request.method == "GET":
+        alert1 = Alert.query.get(alert_id)
+        if alert1 is None:
+            raise APIException("Alert Not Found", status_code=404)
+        return jsonify(alert1.serialize()), 200
+
+    #delete request
+    if request.method == 'DELETE':
+        alert1 = Alert.query.get(alert_id)
+        if alert1 is None:
+            raise APIException("Alert Not Found", status_code=404)
+        db.session.delete(alert1)
+        db.session.commit()
+        return "alert deleted", 200
+        
+    return "invalid method", 404
+    
+
 #####################################
 #PET
 #####################################
@@ -163,7 +202,7 @@ def get_pet():
         all_pets = Pet.query.all()
         all_pets = list(map(lambda x : x.serialize(), all_pets))
         
-        return jsonify(all_alerts), 200
+        return jsonify(all_pets), 200
 
     if request.method == 'POST':
         body = request.get_json() 

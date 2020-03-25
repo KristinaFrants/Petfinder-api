@@ -1,12 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Table, Column, Integer, ForeignKey
-from sqlalchemy.orm import relationship
+# from sqlalchemy import Table, Column, Integer, ForeignKey
+# from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
 
 db = SQLAlchemy()
 
-# --------------Person = PetOwner------------------
+# --------------Person = PetOwner = User------------------
 class Person(db.Model):
     __tablename__ = "person"
     id = db.Column(db.Integer, primary_key=True)
