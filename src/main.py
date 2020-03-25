@@ -65,7 +65,7 @@ def protected():
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
 
-# --------------------signup------------------------
+# --------------------signup/userPostandGet------------------------------------------------------
 @app.route('/register', methods=['POST'])
 def registration():
     body = request.get_json()
@@ -88,16 +88,6 @@ def registration():
     })
 
 
-@app.route('/person', methods=['POST'])
-def handle_person():
-
-    # First we get the payload json
-    body = request.get_json()
-
-    user1 = Person(username=body['username'], email=body['email'])
-    db.session.add(user1)
-    db.session.commit()
-    return "ok", 200
 
 @app.route('/users', methods=['GET'])
 def handle_users():
@@ -113,25 +103,80 @@ def handle_users():
     return "Invalid Method", 404
 
 
-@app.route('/person/<int:person_id>', methods=['PUT', 'GET'])
-def get_single_person(person_id):
-    """
-    Single person
-    """
-    body = request.get_json() #{ 'username': 'new_username'}
+
+@app.route('/alert/<int:alert_id>', methods=['PUT','GET', 'DELETE'])
+def get_single_alert(alert_id):
+    #put request
     if request.method == 'PUT':
-        user1 = Person.query.get(person_id)
-        user1.username = body.username
+        body = request.get_json()
+        if body is None:
+            raise APIException("Specify JSON body", status_code=400)
+        
+        user1 = Alert.query.get(alert_id)
+        if "message" in body:
+            user1.message = body["message"]
         db.session.commit()
-        return jsonify(user1.serialize()), 200
-    if request.method == 'GET':
-        user1 = Person.query.get(person_id)
-        return jsonify(user1.serialize()), 200
+        
+        return jsonify(alert1.serialize()), 200
+    
+    #get request
+    if request.method == "GET":
+        user1 = Alert.query.get(alert_id)
+        if user1 is None:
+            raise APIException("User Not Found", status_code=404)
+        return jsonify(alert1.serialize()), 200
+
+    #delete request
+    if request.method == 'DELETE':
+        user1 = Alert.query.get(alert_id)
+        if user1 is None:
+            raise APIException("User Not Found", status_code=404)
+        db.session.delete(alert1)
+        db.session.commit()
+        return "alert deleted", 200
+
+    return "invalid method", 404
+
+
+
+
+
+
+
+
+
+
+# @app.route('/person', methods=['POST'])
+# def handle_person():
+
+#     # First we get the payload json
+#     body = request.get_json()
+
+#     user1 = Person(username=body['username'], email=body['email'])
+#     db.session.add(user1)
+#     db.session.commit()
+#     return "ok", 200
+
+# @app.route('/person/<int:person_id>', methods=['PUT', 'GET'])
+# def get_single_person(person_id):
+#     """
+#     Single person
+#     """
+#     body = request.get_json() #{ 'username': 'new_username'}
+#     if request.method == 'PUT':
+#         user1 = Person.query.get(person_id)
+#         user1.username = body.username
+#         db.session.commit()
+#         return jsonify(user1.serialize()), 200
+#     if request.method == 'GET':
+#         user1 = Person.query.get(person_id)
+#         return jsonify(user1.serialize()), 200
 
     # return "Invalid Method", 404
-#####################################
+
+#########################################################################
 #ALERT
-#####################################
+#########################################################################
 @app.route('/alert', methods=['POST','GET'])
 def get_alert():
     # get request
@@ -187,13 +232,13 @@ def get_single_alert(alert_id):
         db.session.delete(alert1)
         db.session.commit()
         return "alert deleted", 200
-        
+
     return "invalid method", 404
     
 
-#####################################
+#########################################################################
 #PET
-#####################################
+#########################################################################
 
 @app.route('/pets', methods=['POST','GET'])
 def get_pet():
