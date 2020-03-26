@@ -66,6 +66,8 @@ def protected():
     return jsonify(logged_in_as=current_user), 200
 
 # --------------------signup/userPostandGet------------------------------------------------------
+
+##########################make a user#################################
 @app.route('/register', methods=['POST'])
 def registration():
     body = request.get_json()
@@ -88,7 +90,7 @@ def registration():
     })
 
 
-
+##############################get all users###################################
 @app.route('/users', methods=['GET'])
 def handle_users():
 
@@ -102,45 +104,39 @@ def handle_users():
 
     return "Invalid Method", 404
 
-
-
-@app.route('/alert/<int:alert_id>', methods=['PUT','GET', 'DELETE'])
-def get_single_alert(alert_id):
+###############################getputdel single user########################################
+@app.route('/users/<int:person_id>', methods=['PUT','GET', 'DELETE'])
+def get_single_user(person_id):
     #put request
     if request.method == 'PUT':
         body = request.get_json()
         if body is None:
             raise APIException("Specify JSON body", status_code=400)
         
-        user1 = Alert.query.get(alert_id)
-        if "message" in body:
-            user1.message = body["message"]
+        user1 = Person.query.get(person_id)
+        if "email" in body:
+            user1.email= body["email"]
         db.session.commit()
         
-        return jsonify(alert1.serialize()), 200
+        return jsonify(user1.serialize()), 200
     
     #get request
     if request.method == "GET":
-        user1 = Alert.query.get(alert_id)
+        user1 = Person.query.get(person_id)
         if user1 is None:
             raise APIException("User Not Found", status_code=404)
-        return jsonify(alert1.serialize()), 200
+        return jsonify(user1.serialize()), 200
 
     #delete request
     if request.method == 'DELETE':
-        user1 = Alert.query.get(alert_id)
+        user1 = Person.query.get(person_id)
         if user1 is None:
             raise APIException("User Not Found", status_code=404)
-        db.session.delete(alert1)
+        db.session.delete(user1)
         db.session.commit()
-        return "alert deleted", 200
+        return "person deleted", 200
 
     return "invalid method", 404
-
-
-
-
-
 
 
 
@@ -172,7 +168,7 @@ def get_single_alert(alert_id):
 #         user1 = Person.query.get(person_id)
 #         return jsonify(user1.serialize()), 200
 
-    # return "Invalid Method", 404
+#     return "Invalid Method", 404
 
 #########################################################################
 #ALERT
@@ -267,16 +263,6 @@ def get_pet():
         return "ok", 200
 
     return "invalid method", 404
-
-
-
-
-
-
-
-
-
-
 
 
 
