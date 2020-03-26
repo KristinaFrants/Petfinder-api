@@ -116,6 +116,16 @@ def get_single_user(person_id):
         user1 = Person.query.get(person_id)
         if "email" in body:
             user1.email= body["email"]
+        if "firstname" in body:
+            user1.firstname= body["firstname"]
+        if "lastname" in body:
+            user1.lastname= body["lastname"]
+        if "username" in body:
+            user1.username= body["username"]
+        if "zipcode" in body:
+            user1.zipcode= body["zipcode"]
+        if "address" in body:
+            user1.address= body["address"]
         db.session.commit()
         
         return jsonify(user1.serialize()), 200
