@@ -265,7 +265,8 @@ def get_pet():
             raise APIException("Specify Description", status_code=400)
         if "animal" not in body:
             raise APIException("Specify Animal", status_code=400)
-        pet1 = Pet(name = body['name'], description = body['description'], breed = body['breed'], age = body['age'], eyecolor = body['eyecolor'],  furcolor = body['furcolor'], animal = body['animal'], gender = body['gender'], person_id = body['person_id'])
+            
+        pet1 = Pet(name = body['name'], image = body['image'], description = body['description'], breed = body['breed'], age = body['age'], eyecolor = body['eyecolor'],  furcolor = body['furcolor'], animal = body['animal'], gender = body['gender'], person_id = body['person_id'])
         db.session.add(pet1)
         db.session.commit()
         
@@ -300,6 +301,8 @@ def get_single_pet(pet_id):
             pet1.description= body["description"]
         if "age" in body:
             pet1.age= body["age"]
+        if "image" in body:
+            pet1.image= body["image"]
         db.session.commit()
         
         return jsonify(pet1.serialize()), 200

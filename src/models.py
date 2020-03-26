@@ -67,6 +67,7 @@ class Pet (db.Model):
     gender = db.Column(db.String(20), nullable=True)
     description = db.Column(db.String(1000), nullable=False)
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
+    image = db.Column(db.String(150), nullable=False)
    
     def __repr__(self):
         return '<Pet %r>' % self.name
