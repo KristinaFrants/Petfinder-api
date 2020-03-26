@@ -274,8 +274,53 @@ def get_pet():
 
     return "invalid method", 404
 
+############################singlepetuser###################
+@app.route('/pets/<int:pet_id>', methods=['PUT','GET', 'DELETE'])
+def get_single_pet(pet_id):
+    #put request
+    if request.method == 'PUT':
+        body = request.get_json()
+        if body is None:
+            raise APIException("Specify JSON body", status_code=400)
+        
+        pet1 = Pet.query.get(pet_id)
+        if "name" in body:
+            pet1.name= body["name"]
+        if "animal" in body:
+            pet1.animal= body["animal"]
+        if "breed" in body:
+            pet1.breed= body["breed"]
+        if "gender" in body:
+            pet1.gender= body["gender"]
+        if "eyecolor" in body:
+            pet1.eyecolor= body["eyecolor"]
+        if "furcolor" in body:
+            pet1.furcolor= body["furcolor"]
+        if "description" in body:
+            pet1.description= body["description"]
+        if "age" in body:
+            pet1.age= body["age"]
+        db.session.commit()
+        
+        return jsonify(pet1.serialize()), 200
+    
+    #get request
+    if request.method == "GET":
+        pet1 = Pet.query.get(pet_id)
+        if pet1 is None:
+            raise APIException("User Not Found", status_code=404)
+        return jsonify(pet1.serialize()), 200
 
+    #delete request
+    if request.method == 'DELETE':
+        pet1 = Pet.query.get(pet_id)
+        if pet1 is None:
+            raise APIException("User Not Found", status_code=404)
+        db.session.delete(pet1)
+        db.session.commit()
+        return "pet deleted", 200
 
+    return "invalid method", 404
 
 
 
