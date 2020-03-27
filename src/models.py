@@ -17,7 +17,7 @@ class Person(db.Model):
     zipcode = db.Column(db.String(6))
     address = db.Column(db.String(120))
     password = db.Column(db.String(120), nullable=False)
-    alerts = db.relationship('Alert', backref='person', lazy=True)
+    # alerts = db.relationship('Alert', backref='person', lazy=True)
     pets = db.relationship('Pet', backref='person', lazy=True)
     
 
@@ -33,16 +33,19 @@ class Person(db.Model):
             "lastname": self.lastname,
             "zipcode": self.zipcode,
             "address": self.address,
-            "alerts": list(map(lambda bubu : bubu.serialize(), self.alerts)),
+            # "alerts": list(map(lambda bubu : bubu.serialize(), self.alerts)),
             "pets": list(map(lambda x : x.serialize(), self.pets))
         }
    
     # ----------------------alert subclass---------------------------------
 class Alert(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    # email = db.Column(db.String(80), nullable=False)
+    # phone = db.Column(db.String(20), nullable=True)
+    # name = db.Column(db.String(20), nullable=False)
     date = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=True)
     message = db.Column(db.String(80), nullable=False)
-    person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
+    # person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
 
 
     def __repr__(self):

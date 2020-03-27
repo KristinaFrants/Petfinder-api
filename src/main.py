@@ -199,7 +199,7 @@ def get_alert():
         if "message" not in body:
             raise APIException("Specify Message", status_code=400)
 
-        alert1 = Alert(message = body['message'], person_id = body['person_id'])
+        alert1 = Alert(message = body['message'])
        
         db.session.add(alert1)
         db.session.commit()
