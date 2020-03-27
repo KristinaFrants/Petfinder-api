@@ -200,6 +200,7 @@ def get_alert():
             raise APIException("Specify Message", status_code=400)
 
         alert1 = Alert(message = body['message'], person_id = body['person_id'])
+       
         db.session.add(alert1)
         db.session.commit()
         

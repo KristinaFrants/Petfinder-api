@@ -82,7 +82,8 @@ class Pet (db.Model):
             "eyecolor": self.eyecolor,
             "furcolor": self.furcolor,
             "description": self.description,
-            "gender": self.gender
+            "gender": self.gender,
+            "image": self.image
         }
    
 
