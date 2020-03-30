@@ -198,8 +198,10 @@ def get_alert():
             raise APIException("Specify JSON body", status_code=400)
         if "message" not in body:
             raise APIException("Specify Message", status_code=400)
+        # if "email" not in body:
+        #     raise APIException("Specify Email", status_code=400)
 
-        alert1 = Alert(message = body['message'])
+        alert1 = Alert(message = body['message'], email = body['email'], firstname = body['firstname'], lastname = ['lastname'], zipcode = ['zipcode'])
        
         db.session.add(alert1)
         db.session.commit()
