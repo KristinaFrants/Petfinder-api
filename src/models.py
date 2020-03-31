@@ -43,7 +43,7 @@ class Alert(db.Model):
     email = db.Column(db.String(80), nullable=False)
     phone = db.Column(db.String(20), nullable=True)
     name = db.Column(db.String(30), nullable=False)
-    petname = db.Column(db.String(30), nullable=true)
+    petname = db.Column(db.String(30), nullable=True)
     date = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=True)
     message = db.Column(db.String(80), nullable=False)
     # person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
