@@ -42,9 +42,8 @@ class Alert(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(80), nullable=False)
     phone = db.Column(db.String(20), nullable=True)
-    firstname = db.Column(db.String(20), nullable=False)
-    lastname = db.Column(db.String(20), nullable=False)
-    zipcode = db.Column(db.String(10), nullable=False)
+    name = db.Column(db.String(30), nullable=False)
+    petname = db.Column(db.String(30), nullable=true)
     date = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=True)
     message = db.Column(db.String(80), nullable=False)
     # person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
@@ -58,11 +57,10 @@ class Alert(db.Model):
             "id": self.id,
             "date": self.date,
             "email": self.email,
-            "firstname": self.firstname,
-            "lastname": self.lastname,
+            "name": self.name,
+            "petname": self.petname,
             "phone": self.phone,
-            "message": self.message,
-            "zipcode": self.zipcode
+            "message": self.message
         }
     
 # ----------------------------------Pet Subclass--------------------------------------

@@ -201,7 +201,7 @@ def get_alert():
         if "email" not in body:
             raise APIException("Specify Email", status_code=400)
 
-        alert1 = Alert(message = body['message'], email = body['email'], firstname = body['firstname'], lastname = body['lastname'], zipcode = body['zipcode'], phone = body['phone'])
+        alert1 = Alert(message = body['message'], email = body['email'], name = body['name'], petname = body['petname'], phone = body['phone'])
         db.session.add(alert1)
         db.session.commit()
 
