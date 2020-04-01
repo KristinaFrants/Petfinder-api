@@ -19,6 +19,7 @@ class Person(db.Model):
     password = db.Column(db.String(120), nullable=False)
     # alerts = db.relationship('Alert', backref='person', lazy=True)
     pets = db.relationship('Pet', backref='person', lazy=True)
+    image = db.Column(db.String(150), nullable=True)
     
 
     def __repr__(self):
@@ -33,6 +34,7 @@ class Person(db.Model):
             "lastname": self.lastname,
             "zipcode": self.zipcode,
             "address": self.address,
+            "image" : self.image,
             # "alerts": list(map(lambda bubu : bubu.serialize(), self.alerts)),
             "pets": list(map(lambda x : x.serialize(), self.pets))
         }

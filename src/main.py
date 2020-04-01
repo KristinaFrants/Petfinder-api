@@ -126,6 +126,8 @@ def get_single_user(person_id):
             user1.zipcode= body["zipcode"]
         if "address" in body:
             user1.address= body["address"]
+        if "image" in body:
+            user1.image= body["image"]
         db.session.commit()
         
         return jsonify(user1.serialize()), 200
