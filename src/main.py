@@ -85,8 +85,7 @@ def registration():
     db.session.commit()
 
     return jsonify({
-        'register': 'success',
-        'msg': 'your account has been made'
+        'register': 'success'
     })
 
 
@@ -308,6 +307,8 @@ def get_single_pet(pet_id):
             pet1.age= body["age"]
         if "image" in body:
             pet1.image= body["image"]
+        if "person_id" in body:
+            pet1.person_id= body["person_id"]
         db.session.commit()
         
         return jsonify(pet1.serialize()), 200
