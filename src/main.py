@@ -9,6 +9,8 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap, sha256
 from models import db
 from models import Person, Alert, Pet
+from twilio.rest import Client
+from sendsms import first_function
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
@@ -329,6 +331,43 @@ def get_single_pet(pet_id):
         return "pet deleted", 200
 
     return "invalid method", 404
+# -------------------------------------------sms fetching and end point---------------------
+@app.route('/alert/<int:alert_id>/sendmsg', methods=['GET'])
+def first_msg(alert_id):
+ 
+    body = request.get_json() 
+    
+    # body = request.form()
+    alert2 = Alert.query.get(alert_id)
+    number = alert2.phone
+    mess = alert2.email
+
+    first_function(number, mess)
+    print('ok')
+    return jsonify({'msg':'message sent!' }), 200
+
+# @app.route('/newmsg', methods=['POST'])
+# def new_message():
+
+#     body = request.form()
+    
+#     name = body['Body']
+#     number = body['From']
+#     message =  body[name + ", you are now in the queue."]
+
+#     Alert.enqueue(name, number)
+    
+#     resp = MessagingResponse()
+#     resp.message("Hello " + message_body + " you have been added."  " There are " + repr(len(Queue()._queeue)-1) + " person in front of you.")
+#     return  str(resp)
+
+# @app.route('/all_msgs', methods=['GET'])
+# def getting_all_messages():
+#     return jsonify(Alert(), Person()), 200
+
+
+# this only runs if `$ python src/main.py` is executed
+
 
 
 
