@@ -41,11 +41,12 @@ class Person(db.Model):
    
     # ----------------------alert subclass---------------------------------
 class Alert(db.Model):
+    __tablename__ = "alert"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(80), nullable=False)
     phone = db.Column(db.String(20), nullable=True)
+    petname = db.Column(db.String(20), nullable=True)
     name = db.Column(db.String(30), nullable=False)
-    petname = db.Column(db.String(30), nullable=True)
     date = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=True)
     message = db.Column(db.String(80), nullable=False)
     # person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
@@ -67,6 +68,7 @@ class Alert(db.Model):
     
 # ----------------------------------Pet Subclass--------------------------------------
 class Pet (db.Model):
+    __tablename__ = "pet"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
     animal = db.Column(db.String(20), nullable=False)
@@ -78,7 +80,7 @@ class Pet (db.Model):
     description = db.Column(db.String(1000), nullable=False)
     person_id = db.Column(db.Integer, db.ForeignKey('person.id'), nullable=False)
     image = db.Column(db.String(150), nullable=False)
-   
+    # alert = db.relationship('Alert', backref='pet', lazy=True)
     def __repr__(self):
         return '<Pet %r>' % self.name
 
