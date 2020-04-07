@@ -41,7 +41,7 @@ class Person(db.Model):
    
     # ----------------------alert subclass---------------------------------
 class Alert(db.Model):
-    __tablename__ = "alert"
+    # __tablename__ = "alert"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(80), nullable=False)
     phone = db.Column(db.String(20), nullable=True)
@@ -68,7 +68,7 @@ class Alert(db.Model):
     
 # ----------------------------------Pet Subclass--------------------------------------
 class Pet (db.Model):
-    __tablename__ = "pet"
+    # __tablename__ = "pet"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
     animal = db.Column(db.String(20), nullable=False)
