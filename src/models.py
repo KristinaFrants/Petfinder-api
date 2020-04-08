@@ -49,6 +49,7 @@ class Alert(db.Model):
     name = db.Column(db.String(30), nullable=False)
     date = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=True)
     message = db.Column(db.String(80), nullable=False)
+    # image = db.Column(db.String(150), nullable=True)
     # person_id = db.Column(db.Integer, db.ForeignKey('person.id'))
 
 
