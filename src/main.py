@@ -340,7 +340,7 @@ def first_msg(alert_id):
     
     # body = request.form()
     alert2 = Alert.query.get(alert_id)
-    number = alert2.phone
+    number = "+17865662238"
     mess = "Hi " + alert2.name + ", There's a lead on your alert!"
 
     first_function(number, mess)
