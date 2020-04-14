@@ -331,8 +331,6 @@ def get_single_pet(pet_id):
 
     return "invalid method", 404
 
-
-
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
